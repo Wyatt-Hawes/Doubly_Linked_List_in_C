@@ -1,5 +1,6 @@
 Lex and List
 ==============
+- All code made by myself
 
 List.c
 ---------
