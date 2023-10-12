@@ -121,12 +121,10 @@ List newList(){
 // freeList()
 // Frees all heap memory associated with List *pQ, and sets *pQ to NULL.
 void freeList(List* pL){
-    //printFULL(*pL);
     Node start = (*pL)->sent_front;
     Node next = start->next;
     while(start != NULL){
       
-      //printf("Freeing Node :%d\n", start->data);
       next = start->next;
       freeNode(&start);
       start = next;
@@ -205,23 +203,12 @@ int get(List L){
     printf("List Error: calling front() on List with undefined cursor (cursor == -1)\n");
     exit(EXIT_FAILURE);
   } 
-  
-  //printf("c:%d\n",L->cursor);
 
   if(L->cursor == -1){
     printf("List Error: calling get() on cursor of -1\n");
     exit(EXIT_FAILURE);
   }
 
-  //int c = 0;
-  /*
-  Node curr = L->front;
-  while (c != L->cursor){
-    c++;
-    curr = curr->next;
-
-  }
-  */
  return L->cursNode->data;
 }
 
@@ -232,23 +219,6 @@ static Node getCursorNode(List L){
     return NULL;
 
   }
-  //int c = 0;
-  //Node currNode = L->front;
-  //Finding cursor node
-  //printFULL(L);
-  //printf("c:%d\n",L->cursor);
-  /*
-  while ((c != L->cursor)){
-
-    currNode = currNode->next;
-    c++;
-    if (currNode == NULL){
-      printf("List Error: getCursorNode() next node is NULL\n");
-      exit(EXIT_FAILURE);
-
-    }
-  }
-  */
   return L->cursNode;
 
 }
@@ -256,8 +226,6 @@ static Node getCursorNode(List L){
 // Returns true iff Lists A and B are in same
  // state, and returns false otherwise.
 bool equals(List A, List B){
-  //printFULL(A);
-  //printFULL(B);
    if( A==NULL || B==NULL ){
       printf("List Error: calling equals() on NULL List reference\n");
       exit(EXIT_FAILURE);
@@ -286,15 +254,9 @@ void clear(List L){
 
     int c = 0;
     Node curr = L->front;
-    //printf("length:%d\n", L->length);
     Node next;
-    //printf("2\n");
     while(c < (L->length)){
-      //printf(".\n");
       next = curr->next;
-      //printf("..\n");
-      //printf("freeing:%d\n", curr->data);
-     
       free(curr);
       curr = next;
       c++;
@@ -380,7 +342,6 @@ void moveNext(List L){
     return;
   }
   L->cursor = L->cursor +1; 
-  //printf("c:%d L:%d\n", L->cursor, L->length);
   if (L->cursor >= L->length){
     L->cursor = -1;
     L->cursNode = NULL;
@@ -548,16 +509,13 @@ void insertAfter(List L, int x){
       exit(EXIT_FAILURE);
   }
 
-  //printf("I:%d L:%d\n", index(L), length(L));
   if(index(L) + 1 == length(L)){
-    //printf("appending\n\n");
     append(L,x);
     return;
   }
 
   Node currNode = getCursorNode(L);
   
-  //printf("cursor: %d  data:%d\n", get(L),currNode->data);
   
 
   Node nextNode = currNode->next;
@@ -612,8 +570,6 @@ void deleteFront(List L){
 
 // Delete the back element. Pre: length()>0
 void deleteBack(List L){
-  //printf("Before\n");
-  //printFULL(L);
   if(L->length == 0){
     printf("List Error: calling deleteBack() on empty List\n");
       exit(EXIT_FAILURE);
@@ -624,11 +580,8 @@ void deleteBack(List L){
       exit(EXIT_FAILURE);
   }
   
-  //printf("in delete back\n");
-  //printList(stdout,L);
 
   Node current = L->back;
-  //printf("BD:%d\n", current->data);
   Node prev = current->prev;
   Node next = current->next;
   freeNode(&current);
@@ -639,19 +592,14 @@ void deleteBack(List L){
     L->back = prev;
     
   }
-  //printFULL(L);
-  //printf("---------\n");
   L->length--;
   if(L->length == 0){
       L->back = L->sent_back;
   }
 
-  //printFULL(L);
-  //printf("\nL:%d C:%d\n", L->length, L->cursor);
   if(L->length == L->cursor){
     L->cursor = -1;
   }
-  //printFULL(L);
 }
 
 // Delete cursor element, making cursor undefined.
@@ -673,27 +621,19 @@ void delete(List L){
 
 
   Node cursor = getCursorNode(L);
-  //printList(stdout, L);
-  //printf("Curs:%d data:%d\n",L->cursor, cursor->data);
   
   Node prev = cursor->prev;
   Node next = cursor->next;
-  //printFULL(L);
   if(L->cursor == 0){
-   // printf("front\n");
     deleteFront(L);
-    //printFULL(L);
     L->cursNode = NULL;
     return;
   }
   if(L->cursor + 1 == (L->length)){
-    //printf("back\n");
     deleteBack(L);
-    //printFULL(L);
     L->cursNode = NULL;
     return;
   }
-  //printf("through\n");
   if(prev !=NULL){
 
     prev->next = next;
@@ -705,7 +645,6 @@ void delete(List L){
   L->cursor = -1;
   L->length--;
   L->cursNode = NULL;
-  //printFULL(L);
 }
 
 
@@ -719,18 +658,15 @@ void delete(List L){
 // with front on left.
 void printList(FILE *out, List L){
   
-  //printf("\n\n1\n");
   Node curr = L->front;
 
   int length = 0;
-  //printf("2\n");
   while(length < L->length){
     
     fprintf(out, "  %d", curr->data);
     curr = curr->next;
     length++;
   }
-  //printf("3\n");
     fprintf(out, "\n");
 }
 
